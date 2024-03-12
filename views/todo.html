@@ -1,0 +1,43 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.0.2/tailwind.min.css'>
+    <script src="script.js" defer></script>
+    <title>ToDo App</title>
+</head>
+<body class="bg-red-200 lg:bg-red-100">
+    <div class="flex flex-col m-auto items-center max-w-screen-xl h-screen xl:h-full shadow-2xl bg-red-200 xl:my-20 lg:rounded-2xl">
+        <header>
+            <h1 class="text-2xl lg:text-4xl text-black font-bold font-serif mt-10 lg:mt-24">Todo App</h1>
+        </header>
+        <div class="w-full px-5 lg:w-4/5">
+            <div class="w-full">
+                <h2 class="text-lg lg:text-2xl font-bold p-10 invisible" id="text-incompleted">Loading todos...</h2>
+                <ul id="todos-incompleted" class="flex flex-col w-full">
+                </ul>
+            </div>
+            <div class="mt-20 w-full text-center">
+                <form action="/todos" method="post" id="add-todo-form" class="flex flex-col lg:flex-row items-center justify-center w-full">
+                    <input type="text" name="title" id="title" placeholder="New todo....." class="w-5/6 lg:w-3/6 py-1 px-1 placeholder-black bg-transparent border border-black rounded-md focus:bg-white cursor-pointer" required>
+                    <div class="mx-5 inline-block">
+                        <label for="date">Due to:</label>
+                        <input type="date" name="date" id="date" class="bg-transparent border border-black rounded-md focus:bg-white py-0.5 mt-10 lg:mt-0 cursor-pointer">
+                    </div>
+                    <button type="submit" class="border border-black rounded-md bg-green-300 px-3 py-1 mt-10 lg:mt-0">Add ToDo</button>
+                </form>
+            </div>
+            <div class="mt-20 w-full">
+                <h2 class="text-lg lg:text-2xl font-bold p-10 invisible" id="text-completed">Completed todos</h2>
+                <ul id="todos-completed" class="flex flex-col w-full">
+        
+                </ul>
+            </div>
+        </div>
+        <footer class="my-20">
+            <p>Made by Juraj Packa &copy; 2024</p>
+        </footer>
+    </div>
+</body>
+</html>
