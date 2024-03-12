@@ -15,7 +15,7 @@ type Todo = {
 
 async function fetchTodos(): Promise<void> {
     const response: Todo[] = await request('GET', '/todos/');
-    textIncompleted!.innerText = 'Incompleted todos';
+    textIncompleted.innerText = 'Incompleted todos';
     createTodosList(response);
     showIncompleted();
 }
@@ -116,9 +116,9 @@ async function deleteTodo(id: string): Promise<void> {
 
 function sortTodo(completed: boolean, li: HTMLLIElement){
     if(completed) {
-        todosCompleted?.appendChild(li);
+        todosCompleted.appendChild(li);
     } else {
-        todosIncompleted?.appendChild(li);  
+        todosIncompleted.appendChild(li);  
     }
 }
 
@@ -151,19 +151,19 @@ function isTodoDue(todo: Todo): boolean {
 function showCompleted(): void {
     const completed = todosCompleted?.querySelectorAll('li') as NodeListOf<HTMLLIElement>;
     if(completed.length > 0) {
-        textCompleted?.classList.replace('invisible', 'visible');
+        textCompleted.classList.replace('invisible', 'visible');
     }
     else {
-        textCompleted?.classList.add('visible', 'invisible');
+        textCompleted.classList.add('visible', 'invisible');
     }
 }
 function showIncompleted(): void {
     const inCompleted = todosIncompleted?.querySelectorAll('li') as NodeListOf<HTMLLIElement>;
     if(inCompleted.length > 0) {
-        textIncompleted?.classList.replace('invisible', 'visible');
+        textIncompleted.classList.replace('invisible', 'visible');
     }
     else {
-        textIncompleted?.classList.add('visible', 'invisible');
+        textIncompleted.classList.add('visible', 'invisible');
     }
 }
 

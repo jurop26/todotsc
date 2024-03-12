@@ -115,10 +115,10 @@ function deleteTodo(id) {
 }
 function sortTodo(completed, li) {
     if (completed) {
-        todosCompleted === null || todosCompleted === void 0 ? void 0 : todosCompleted.appendChild(li);
+        todosCompleted.appendChild(li);
     }
     else {
-        todosIncompleted === null || todosIncompleted === void 0 ? void 0 : todosIncompleted.appendChild(li);
+        todosIncompleted.appendChild(li);
     }
 }
 function maybeShowDueAlarm(todo, img) {
@@ -147,19 +147,19 @@ function isTodoDue(todo) {
 function showCompleted() {
     const completed = todosCompleted === null || todosCompleted === void 0 ? void 0 : todosCompleted.querySelectorAll('li');
     if (completed.length > 0) {
-        textCompleted === null || textCompleted === void 0 ? void 0 : textCompleted.classList.replace('invisible', 'visible');
+        textCompleted.classList.replace('invisible', 'visible');
     }
     else {
-        textCompleted === null || textCompleted === void 0 ? void 0 : textCompleted.classList.add('visible', 'invisible');
+        textCompleted.classList.add('visible', 'invisible');
     }
 }
 function showIncompleted() {
     const inCompleted = todosIncompleted === null || todosIncompleted === void 0 ? void 0 : todosIncompleted.querySelectorAll('li');
     if (inCompleted.length > 0) {
-        textIncompleted === null || textIncompleted === void 0 ? void 0 : textIncompleted.classList.replace('invisible', 'visible');
+        textIncompleted.classList.replace('invisible', 'visible');
     }
     else {
-        textIncompleted === null || textIncompleted === void 0 ? void 0 : textIncompleted.classList.add('visible', 'invisible');
+        textIncompleted.classList.add('visible', 'invisible');
     }
 }
 function showErrorMessage(result) {
