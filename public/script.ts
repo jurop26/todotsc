@@ -62,7 +62,7 @@ function createTodoNodes(todo: Todo): void {
     dueDate.value = todo.date;
     const dueDateColor: string = maybeShowDueAlarm(todo, dueClock) ? 'text-red-500' : 'text-black';
     dueDate.classList.add('text-xs','bg-transparent','focus:bg-white', 'w-fit','min-w-32', 'mr-2' ,'lg:mr-5','cursor-pointer', dueDateColor);
-    dueDate.addEventListener('change', (e: Event) => {
+    dueDate.addEventListener('change', (e: Event): void => {
         todo.date = (e.target as HTMLInputElement)?.value;
         updateTodo(todo.id, {date: todo.date});
 
@@ -85,7 +85,7 @@ function createTodoNodes(todo: Todo): void {
 
 addTodoForm?.addEventListener('submit', createTodo);
 
-async function createTodo(e: Event) {
+async function createTodo(e: Event): Promise<void> {
     e.preventDefault();
     const title = document.querySelector('#title') as HTMLInputElement;
     const date = document.querySelector('#date') as HTMLInputElement;
@@ -109,7 +109,7 @@ async function updateTodo(id: string, task: object): Promise<void> {
     if(response.status === 404) showErrorMessage(response);
 }
 
-async function deleteTodo(id: string) {
+async function deleteTodo(id: string): Promise<void> {
     const response: Response = await request('DELETE','/todos/' + id); 
     if(response.status === 404) showErrorMessage(response);
 }
