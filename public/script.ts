@@ -25,12 +25,12 @@ function createTodosList(todos: Todo[]): void {
 }
 
 function createTodoNodes(todo: Todo): void {
-    const li = document.createElement('li') as HTMLLIElement;
-    const completed = document.createElement('input') as HTMLInputElement;
-    const dueClock = document.createElement('img') as HTMLImageElement;
-    const title = document.createElement('input') as HTMLInputElement;
-    const dueDate = document.createElement('input') as HTMLInputElement;
-    const deleteButton = document.createElement('img') as HTMLImageElement;
+    const li = document.createElement('li');
+    const completed = document.createElement('input');
+    const dueClock = document.createElement('img');
+    const title = document.createElement('input');
+    const dueDate = document.createElement('input');
+    const deleteButton = document.createElement('img');
     
     li.classList.add('flex','flex-row','justify-between', 'py-1', 'border-b', 'border-black');
     
@@ -38,14 +38,15 @@ function createTodoNodes(todo: Todo): void {
     completed.checked = todo.completed;
     completed.classList.add('mr-2','lg:mr-5', 'cursor-pointer');
     completed.addEventListener('change', (e: Event) => {
-        todo.completed = (e.target as HTMLInputElement).checked;
+        const target = <HTMLInputElement>e.target;
+        todo.completed = target.checked;
         li.remove();
         updateTodo(todo.id, {completed: todo.completed});
         sortTodo(todo.completed, li);
         showCompleted();
         showIncompleted();
 
-        const dueInput = (e.target as HTMLElement).parentNode?.querySelectorAll('input[type="date"]')[0] as HTMLElement;
+        const dueInput = target.parentNode?.querySelectorAll('input[type="date"]')[0] as HTMLElement;
         changeDueDateColor(dueInput, maybeShowDueAlarm(todo, dueClock));
     });
     
@@ -60,14 +61,14 @@ function createTodoNodes(todo: Todo): void {
 
     dueDate.type = 'date';
     dueDate.value = todo.date;
-    const dueDateColor: string = maybeShowDueAlarm(todo, dueClock) ? 'text-red-500' : 'text-black';
+    const dueDateColor = maybeShowDueAlarm(todo, dueClock) ? 'text-red-500' : 'text-black';
     dueDate.classList.add('text-xs','bg-transparent','focus:bg-white', 'w-fit','min-w-32', 'mr-2' ,'lg:mr-5','cursor-pointer', dueDateColor);
     dueDate.addEventListener('change', (e: Event): void => {
-        todo.date = (e.target as HTMLInputElement)?.value;
+        const target = <HTMLInputElement>e.target;
+        todo.date = target.value;
         updateTodo(todo.id, {date: todo.date});
 
-        const dueInput = e.target as HTMLElement;
-        changeDueDateColor(dueInput, maybeShowDueAlarm(todo, dueClock));
+        changeDueDateColor(target, maybeShowDueAlarm(todo, dueClock));
     });
     
     deleteButton.src = 'icon-bin.svg';
@@ -104,12 +105,12 @@ async function createTodo(e: Event): Promise<void> {
     createTodoNodes(response);
 }
 
-async function updateTodo(id: string, task: object): Promise<void> {
+async function updateTodo(id: Todo['id'], task: Partial<Todo>): Promise<void> {
     const response: Response = await request('PATCH', '/todos/' + id, task);
     if(response.status === 404) showErrorMessage(response);
 }
 
-async function deleteTodo(id: string): Promise<void> {
+async function deleteTodo(id: Todo['id']): Promise<void> {
     const response: Response = await request('DELETE','/todos/' + id); 
     if(response.status === 404) showErrorMessage(response);
 }
@@ -148,8 +149,8 @@ function isTodoDue(todo: Todo): boolean {
     return dueDate <= today;
 }
 
-function showCompleted(): void {
-    const completed = todosCompleted?.querySelectorAll('li') as NodeListOf<HTMLLIElement>;
+function showCompleted() {
+    const completed = todosCompleted?.querySelectorAll('li');
     if(completed.length > 0) {
         textCompleted.classList.replace('invisible', 'visible');
     }
@@ -157,8 +158,8 @@ function showCompleted(): void {
         textCompleted.classList.add('visible', 'invisible');
     }
 }
-function showIncompleted(): void {
-    const inCompleted = todosIncompleted?.querySelectorAll('li') as NodeListOf<HTMLLIElement>;
+function showIncompleted() {
+    const inCompleted = todosIncompleted?.querySelectorAll('li');
     if(inCompleted.length > 0) {
         textIncompleted.classList.replace('invisible', 'visible');
     }
@@ -167,19 +168,19 @@ function showIncompleted(): void {
     }
 }
 
-function showErrorMessage(result: any): void {
-    const body = document.querySelector('body') as HTMLBodyElement;
-    const div = document.createElement('div') as HTMLDivElement;
-    const err = document.createElement('p') as HTMLParagraphElement;
-    const errDesc = document.createElement('p') as HTMLParagraphElement;
-    const button = document.createElement('button') as HTMLButtonElement;
+function showErrorMessage(result: Response & {message?: string}) {
+    const body = document.querySelector('body');
+    const div = document.createElement('div');
+    const err = document.createElement('p');
+    const errDesc = document.createElement('p');
+    const button = document.createElement('button');
 
     div.classList.add('flex', 'flex-col','justify-center','items-center','absolute','left-1/2', 'top-1/2','w-96','h-fit','transform' ,'-translate-x-1/2' ,'-translate-y-1/2' , 'border-double','border-8', 'border-red-500','bg-red-400', 'rounded');
     
     err.classList.add('text-white','pt-5');
     err.innerText = `Error: status: ${result.status}`;
     errDesc.classList.add('text-white','pt-5');
-    errDesc.innerText = result.message;
+    if (result.message) errDesc.innerText = result.message;
 
     button.classList.add('font-bold','border','px-4','py-1', 'my-5','rounded-md','hover:bg-red-700');
     button.innerText= 'Ok';

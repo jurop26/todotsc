@@ -37,13 +37,14 @@ function createTodoNodes(todo) {
     completed.classList.add('mr-2', 'lg:mr-5', 'cursor-pointer');
     completed.addEventListener('change', (e) => {
         var _a;
-        todo.completed = e.target.checked;
+        const target = e.target;
+        todo.completed = target.checked;
         li.remove();
         updateTodo(todo.id, { completed: todo.completed });
         sortTodo(todo.completed, li);
         showCompleted();
         showIncompleted();
-        const dueInput = (_a = e.target.parentNode) === null || _a === void 0 ? void 0 : _a.querySelectorAll('input[type="date"]')[0];
+        const dueInput = (_a = target.parentNode) === null || _a === void 0 ? void 0 : _a.querySelectorAll('input[type="date"]')[0];
         changeDueDateColor(dueInput, maybeShowDueAlarm(todo, dueClock));
     });
     dueClock.src = 'icon-time.svg';
@@ -62,11 +63,10 @@ function createTodoNodes(todo) {
     const dueDateColor = maybeShowDueAlarm(todo, dueClock) ? 'text-red-500' : 'text-black';
     dueDate.classList.add('text-xs', 'bg-transparent', 'focus:bg-white', 'w-fit', 'min-w-32', 'mr-2', 'lg:mr-5', 'cursor-pointer', dueDateColor);
     dueDate.addEventListener('change', (e) => {
-        var _a;
-        todo.date = (_a = e.target) === null || _a === void 0 ? void 0 : _a.value;
+        const target = e.target;
+        todo.date = target.value;
         updateTodo(todo.id, { date: todo.date });
-        const dueInput = e.target;
-        changeDueDateColor(dueInput, maybeShowDueAlarm(todo, dueClock));
+        changeDueDateColor(target, maybeShowDueAlarm(todo, dueClock));
     });
     deleteButton.src = 'icon-bin.svg';
     deleteButton.classList.add('fill-red-500', 'text-red-500', 'w-4', 'h-4', 'mt-1', 'cursor-pointer');
@@ -172,7 +172,8 @@ function showErrorMessage(result) {
     err.classList.add('text-white', 'pt-5');
     err.innerText = `Error: status: ${result.status}`;
     errDesc.classList.add('text-white', 'pt-5');
-    errDesc.innerText = result.message;
+    if (result.message)
+        errDesc.innerText = result.message;
     button.classList.add('font-bold', 'border', 'px-4', 'py-1', 'my-5', 'rounded-md', 'hover:bg-red-700');
     button.innerText = 'Ok';
     button.addEventListener('click', () => div.remove());

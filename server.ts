@@ -16,7 +16,7 @@ type Todo = {
     completed_at: string,
 }
 
-const todos: Map<string, object> = new Map();
+const todos: Map<Todo['id'], Todo> = new Map();
 
 app.get('/', (req: Request, res: Response) => {
     res.render('todo.html');
